@@ -7,6 +7,8 @@ Hardware Remote Control &amp; Status Dashboard
 ### Visualisation
 - Charge Mode
 - SoC of vehicle battery
+- Percentage of solar energy per session
+- Charging indicator
 
  ### Actions
 - Switch charge mode
