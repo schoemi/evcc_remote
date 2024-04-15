@@ -1,0 +1,82 @@
+esphome:
+  name: evccdash
+  friendly_name: "EVCC Dashboard"
+  name_add_mac_suffix: false
+  project:
+    name: esphome.web
+    version: '1.0'
+
+esp8266:
+  board: esp01_1m
+
+# Enable Home Assistant API
+api:
+
+# Allow Over-The-Air updates
+ota:
+
+# Logging
+logger:
+  level: ERROR
+
+# Allow provisioning Wi-Fi via serial
+# improv_serial:
+
+wifi:
+  # Set up a wifi access point
+  ap: {}
+
+# In combination with the `ap` this allows the user
+# to provision wifi credentials to the device via WiFi AP.
+# captive_portal:
+
+dashboard_import:
+  package_import_url: github://esphome/example-configs/esphome-web/esp8266.yaml@main
+  import_full_config: true
+
+# To have a "next url" for improv serial
+# web_server:
+
+mqtt:
+  broker: 192.168.178.153
+  username: mqtt
+  password: !secret mqtt_password
+
+#mqtt Message Subscriptions
+
+text_sensor:
+# Charge Mode
+  - platform: mqtt_subscribe
+    name: "LP1 - Charge Mode"
+    id: lp1ChargeMode
+    topic: homeassistant/evcc/loadpoints/1/mode
+# Connection Status
+  - platform: mqtt_subscribe
+    name: "LP1 - Connection Status"
+    id: lp1ConnectionStatus
+    topic: homeassistant/evcc/loadpoints/1/connected
+# Vehicle SoC
+  - platform: mqtt_subscribe
+    name: "LP1 - Car SoC"
+    id: lp1CarSoc
+    topic: homeassistant/evcc/loadpoints/1/vehicleSoc
+# Vehice Charging Status
+  - platform: mqtt_subscribe
+    name: "LP1 - Car Charging State"
+    id: lp1CarChargingState
+    topic: homeassistant/evcc/loadpoints/1/charging
+# LP Session Solar Rate
+  - platform: mqtt_subscribe
+    name: "LP1 - Session Solar Rate"
+    id: lp1SolarRateRaw
+    topic: homeassistant/evcc/loadpoints/1/sessionSolarPercentage
+  
+# LED Konfiguration
+light:
+  - platform: neopixelbus
+    variant: WS2812
+    pin: GPIO15
+    num_leds: 8
+    type: GRB
+    name: "Lightstrip"
+    id: ledstrip1
